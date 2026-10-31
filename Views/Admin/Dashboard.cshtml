@@ -1,0 +1,203 @@
+@model AutoCare.ViewModels.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Operations Hub - AutoCare";
+}
+
+<div class="container py-4">
+    <!-- Header with Quick Action Buttons -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom">
+        <div>
+            <div class="text-uppercase fw-bold small text-muted">Workshop Operations Center</div>
+            <h1 class="h3 brand-font mb-1">Administrative Dashboard</h1>
+            <p class="text-muted small mb-0">Overview of active bays, customer bookings, revenue, and fleet maintenance metrics.</p>
+        </div>
+        <div class="d-flex gap-2 mt-3 mt-md-0">
+            <a asp-action="Requests" class="btn btn-autocare-primary btn-sm">
+                <i class="fa-solid fa-list-check me-1"></i>Manage Requests
+            </a>
+            <a asp-action="Services" class="btn btn-autocare-outline btn-sm">
+                <i class="fa-solid fa-screwdriver-wrench me-1"></i>Service Catalog
+            </a>
+            <a asp-action="Customers" class="btn btn-outline-secondary btn-sm">
+                <i class="fa-solid fa-users me-1"></i>Customers
+            </a>
+        </div>
+    </div>
+
+    <!-- KPI Metric Cards Grid -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-value text-warning">@Model.PendingRequests</div>
+                    <div class="kpi-label">Pending Approval</div>
+                </div>
+                <div class="kpi-icon-wrap" style="background-color: #FEF3C7; color: #92400E;">
+                    <i class="fa-solid fa-hourglass-start"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-value text-primary">@Model.InProgressRequests</div>
+                    <div class="kpi-label">Active in Bay</div>
+                </div>
+                <div class="kpi-icon-wrap" style="background-color: #E0E7FF; color: #3730A3;">
+                    <i class="fa-solid fa-wrench"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-value text-success">@Model.CompletedRequests</div>
+                    <div class="kpi-label">Completed Services</div>
+                </div>
+                <div class="kpi-icon-wrap" style="background-color: #DCFCE7; color: #166534;">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-value text-navy">₹@Model.TotalRevenue.ToString("N0")</div>
+                    <div class="kpi-label">Total Invoiced</div>
+                </div>
+                <div class="kpi-icon-wrap" style="background-color: #F1F5F9; color: #1E293B;">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-4">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-value">@Model.TotalRequests</div>
+                    <div class="kpi-label">All-time Bookings</div>
+                </div>
+                <div class="kpi-icon-wrap" style="background-color: #F3E8FF; color: #6B21A8;">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-4">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-value">@Model.TotalVehicles</div>
+                    <div class="kpi-label">Registered Fleet</div>
+                </div>
+                <div class="kpi-icon-wrap" style="background-color: #CFFAFE; color: #155E75;">
+                    <i class="fa-solid fa-car"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-value">@Model.TotalCustomers</div>
+                    <div class="kpi-label">Active Customers</div>
+                </div>
+                <div class="kpi-icon-wrap" style="background-color: #FFE4E6; color: #9F1239;">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Service Requests Table -->
+    <div class="classic-card">
+        <div class="classic-card-header">
+            <h5><i class="fa-solid fa-clock-rotate-left text-warning me-2"></i>Recent Incoming Service Bookings</h5>
+            <a asp-action="Requests" class="btn btn-autocare-outline btn-sm">View All Requests</a>
+        </div>
+
+        <div class="classic-card-body p-0">
+            @if (Model.RecentRequests.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-autocare table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Request #</th>
+                                <th>Customer</th>
+                                <th>Vehicle</th>
+                                <th>Service</th>
+                                <th>Scheduled Date</th>
+                                <th>Status</th>
+                                <th class="text-end">Manage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var r in Model.RecentRequests)
+                            {
+                                var badgeClass = r.Status switch
+                                {
+                                    "Pending" => "status-pending",
+                                    "Approved" => "status-approved",
+                                    "In Progress" => "status-inprogress",
+                                    "Completed" => "status-completed",
+                                    "Rejected" => "status-rejected",
+                                    _ => "status-cancelled"
+                                };
+
+                                <tr>
+                                    <td>
+                                        <a asp-action="RequestDetails" asp-route-id="@r.RequestId" class="fw-bold text-decoration-none text-navy">
+                                            @r.RequestNumber
+                                        </a>
+                                        <div class="text-muted" style="font-size: 0.72rem;">@r.CreatedAt.ToString("dd MMM, hh:mm tt")</div>
+                                    </td>
+                                    <td>
+                                        <div class="fw-semibold">@(r.User?.FullName ?? "N/A")</div>
+                                        <div class="text-muted" style="font-size: 0.75rem;">@(r.User?.PhoneNumber ?? r.User?.Email)</div>
+                                    </td>
+                                    <td>
+                                        <div>@r.Vehicle?.Brand @r.Vehicle?.Model</div>
+                                        <span class="badge bg-secondary" style="font-size: 0.7rem;">@r.Vehicle?.RegistrationNumber</span>
+                                    </td>
+                                    <td>
+                                        <div class="fw-semibold">@r.ServiceNameSnapshot</div>
+                                        <div class="text-muted small">₹@r.ServicePriceSnapshot.ToString("N0")</div>
+                                    </td>
+                                    <td>
+                                        <div class="small fw-semibold">@r.PreferredDate.ToString("dd MMM yyyy")</div>
+                                        <div class="text-muted" style="font-size: 0.75rem;">@r.PreferredTime</div>
+                                    </td>
+                                    <td>
+                                        <span class="badge-status @badgeClass">@r.Status</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="d-inline-flex gap-1">
+                                            <a asp-action="RequestDetails" asp-route-id="@r.RequestId" class="btn btn-autocare-primary btn-sm py-1 px-2" title="Manage Request & Update Status">
+                                                <i class="fa-solid fa-sliders me-1"></i>Manage
+                                            </a>
+                                            @if (r.Status == "Completed" && r.Invoice != null)
+                                            {
+                                                <a asp-action="Invoice" asp-route-id="@r.RequestId" class="btn btn-outline-success btn-sm py-1 px-2" title="Invoice">
+                                                    <i class="fa-solid fa-receipt"></i>
+                                                </a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5 text-muted">
+                    <p>No service requests recorded in the system yet.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,114 @@
+@model IEnumerable<AutoCare.Models.Vehicle>
+@{
+    ViewData["Title"] = "My Registered Vehicles - AutoCare";
+}
+
+<div class="container py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <div class="text-uppercase fw-bold small text-muted">Garage Management</div>
+            <h1 class="h3 brand-font mb-1">My Registered Vehicles</h1>
+            <p class="text-muted small mb-0">Register your vehicles to book services seamlessly and track maintenance history.</p>
+        </div>
+        <div class="mt-2 mt-md-0">
+            <a asp-action="AddVehicle" class="btn btn-autocare-primary">
+                <i class="fa-solid fa-plus me-1"></i>Add New Vehicle
+            </a>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var v in Model)
+            {
+                var isTwoWheeler = v.VehicleType == "Bike" || v.VehicleType == "Scooter";
+                var icon = isTwoWheeler ? "fa-motorcycle" : "fa-car";
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="classic-card h-100">
+                        <div class="classic-card-header bg-light">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-primary p-2 rounded-circle">
+                                    <i class="fa-solid @icon text-white"></i>
+                                </span>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">@v.Brand @v.Model</h6>
+                                    <span class="text-muted small">@v.VehicleType &bull; @v.ManufacturingYear</span>
+                                </div>
+                            </div>
+                            <span class="badge bg-dark">@v.RegistrationNumber</span>
+                        </div>
+
+                        <div class="classic-card-body">
+                            <div class="row g-2 mb-3 small text-muted">
+                                <div class="col-6">
+                                    <span class="fw-semibold text-dark">Fuel Type:</span> @v.FuelType
+                                </div>
+                                <div class="col-6">
+                                    <span class="fw-semibold text-dark">Services:</span> @(v.ServiceRequests?.Count ?? 0) Bookings
+                                </div>
+                                <div class="col-12">
+                                    <span class="fw-semibold text-dark">Added On:</span> @v.CreatedAt.ToString("dd MMM yyyy")
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 pt-2 border-top">
+                                <a asp-action="BookService" asp-route-vehicleId="@v.VehicleId" class="btn btn-autocare-gold btn-sm flex-grow-1">
+                                    <i class="fa-solid fa-calendar-check me-1"></i>Book Service
+                                </a>
+                                <a asp-action="EditVehicle" asp-route-id="@v.VehicleId" class="btn btn-outline-secondary btn-sm" title="Edit Vehicle">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteVehicleModal-@v.VehicleId" title="Delete Vehicle">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delete Confirmation Modal -->
+                    <div class="modal fade" id="deleteVehicleModal-@v.VehicleId" tabindex="-1" aria-labelledby="deleteModalLabel-@v.VehicleId" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-danger text-white">
+                                    <h5 class="modal-title" id="deleteModalLabel-@v.VehicleId">
+                                        <i class="fa-solid fa-triangle-exclamation me-2"></i>Confirm Vehicle Removal
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to remove <strong>@v.Brand @v.Model (@v.RegistrationNumber)</strong> from your garage?
+                                    <div class="alert alert-warning small mt-3 mb-0">
+                                        <i class="fa-solid fa-circle-info me-1"></i> Note: Vehicles with active or pending service requests cannot be deleted.
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                    <form asp-action="DeleteVehicle" asp-route-id="@v.VehicleId" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-danger btn-sm">Yes, Delete Vehicle</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5 bg-white rounded-3 border">
+            <div class="text-muted mb-3" style="font-size: 3rem;">
+                <i class="fa-solid fa-car-side"></i>
+            </div>
+            <h4 class="brand-font fw-bold">Your Garage is Empty</h4>
+            <p class="text-muted small mb-4 mx-auto" style="max-width: 450px;">
+                You haven't registered any vehicle yet. Register your car, motorcycle, or scooter to start booking specialized maintenance services.
+            </p>
+            <a asp-action="AddVehicle" class="btn btn-autocare-primary">
+                <i class="fa-solid fa-plus me-1"></i>Add Your First Vehicle
+            </a>
+        </div>
+    }
+</div>

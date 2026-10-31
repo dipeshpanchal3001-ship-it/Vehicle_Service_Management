@@ -1,0 +1,103 @@
+@model AutoCare.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Sign In - AutoCare";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="classic-card">
+                <div class="classic-card-header text-center justify-content-center flex-column py-4" style="background-color: var(--primary-navy); color: #FFFFFF;">
+                    <div class="brand-emblem mx-auto mb-2" style="width: 48px; height: 48px; font-size: 1.4rem;">
+                        <i class="fa-solid fa-car-side"></i>
+                    </div>
+                    <h4 class="text-white mb-1">Welcome to AutoCare</h4>
+                    <p class="text-white-50 small mb-0">Sign in to manage your vehicles & bookings</p>
+                </div>
+
+                <div class="classic-card-body p-4">
+                    <form asp-controller="Account" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="form-autocare">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger p-2 small mb-3" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-envelope"></i></span>
+                                <input asp-for="Email" class="form-control" placeholder="name@example.com" autofocus />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-lock"></i></span>
+                                <input asp-for="Password" class="form-control" placeholder="••••••••" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4 form-check">
+                            <input asp-for="RememberMe" class="form-check-input" />
+                            <label asp-for="RememberMe" class="form-check-label text-muted small"></label>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-autocare-primary btn-lg fs-6">
+                                <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>Sign In
+                            </button>
+                        </div>
+
+                        <div class="text-center text-muted small">
+                            Don't have an account yet? 
+                            <a asp-action="Register" class="text-decoration-none fw-bold text-primary">Register Here</a>
+                        </div>
+                    </form>
+
+                    <!-- Quick Demo Credentials Box for Evaluation -->
+                    <div class="mt-4 p-3 bg-light rounded border">
+                        <div class="d-flex align-items-center gap-1 small fw-bold text-navy mb-2">
+                            <i class="fa-solid fa-key text-warning"></i> Demo Login Accounts (For Evaluation):
+                        </div>
+                        <div class="row g-2 small">
+                            <div class="col-12 p-2 border rounded bg-white">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="badge bg-danger">Admin Account</span>
+                                        <div class="text-muted mt-1"><strong>Email:</strong> admin@autocare.com</div>
+                                        <div class="text-muted"><strong>Pass:</strong> Admin@123</div>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="fillCredentials('admin@autocare.com', 'Admin@123')">
+                                        Use Admin
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-12 p-2 border rounded bg-white">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="badge bg-success">Customer Account</span>
+                                        <div class="text-muted mt-1"><strong>Email:</strong> customer@autocare.com</div>
+                                        <div class="text-muted"><strong>Pass:</strong> Customer@123</div>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="fillCredentials('customer@autocare.com', 'Customer@123')">
+                                        Use Customer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function fillCredentials(email, password) {
+            document.getElementById('Email').value = email;
+            document.getElementById('Password').value = password;
+        }
+    </script>
+}

@@ -1,0 +1,104 @@
+@{
+    ViewData["Title"] = "Contact Us - AutoCare Vehicle Services";
+}
+
+<div class="bg-light py-5 border-bottom">
+    <div class="container text-center">
+        <div class="text-uppercase fw-bold small text-muted mb-1" style="letter-spacing: 2px;">Get In Touch</div>
+        <h1 class="display-6 brand-font fw-bold">Contact AutoCare</h1>
+        <p class="text-muted mx-auto" style="max-width: 650px;">
+            Have questions about a service or need immediate roadside consultation? Our service advisory team is available to assist you.
+        </p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-5">
+        <div class="col-lg-5">
+            <div class="p-4 bg-white rounded-3 border shadow-sm h-100">
+                <h4 class="brand-font fw-bold mb-4">Workshop Headquarters</h4>
+
+                <div class="d-flex gap-3 mb-4">
+                    <div class="text-primary fs-4"><i class="fa-solid fa-location-dot"></i></div>
+                    <div>
+                        <div class="fw-bold">Address</div>
+                        <div class="text-muted small">
+                            Plot 42, Automotive Central Avenue, Industrial Zone,<br />
+                            New Delhi, India - 110020
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 mb-4">
+                    <div class="text-primary fs-4"><i class="fa-solid fa-phone"></i></div>
+                    <div>
+                        <div class="fw-bold">Phone Support</div>
+                        <div class="text-muted small">
+                            Workshop Direct: +91 (011) 4567-8900<br />
+                            Emergency Advisor: +91 98765 43210
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 mb-4">
+                    <div class="text-primary fs-4"><i class="fa-solid fa-envelope"></i></div>
+                    <div>
+                        <div class="fw-bold">Email Inquiries</div>
+                        <div class="text-muted small">
+                            General: info@autocare.com<br />
+                            Bookings: support@autocare.com
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3">
+                    <div class="text-primary fs-4"><i class="fa-solid fa-clock"></i></div>
+                    <div>
+                        <div class="fw-bold">Operational Hours</div>
+                        <div class="text-muted small">
+                            Monday – Saturday: 8:00 AM – 7:30 PM<br />
+                            Sunday: Closed (Emergency Breakdown On-call)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="p-4 bg-white rounded-3 border shadow-sm">
+                <h4 class="brand-font fw-bold mb-3">Send a Message to Our Service Desk</h4>
+                <p class="text-muted small mb-4">Fill out the inquiry form below and our head service advisor will contact you within 2 business hours.</p>
+
+                <form asp-controller="Home" asp-action="Contact" method="post" class="form-autocare">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="e.g. Amit Patel" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" name="phone" class="form-control" placeholder="e.g. +91 98765 43210" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" name="email" class="form-control" placeholder="e.g. amit@example.com" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Subject</label>
+                            <input type="text" name="subject" class="form-control" placeholder="e.g. Brake noise inquiry" required />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Message Details</label>
+                            <textarea name="message" class="form-control" rows="4" placeholder="Describe your vehicle inquiry or issue..." required></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-autocare-primary px-4">
+                                <i class="fa-solid fa-paper-plane me-2"></i>Submit Inquiry
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,135 @@
+@model IEnumerable<AutoCare.Models.VehicleService>
+@{
+    ViewData["Title"] = "Manage Service Catalog - Admin AutoCare";
+}
+
+<div class="container py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <div class="text-uppercase fw-bold small text-muted">Service Master</div>
+            <h1 class="h3 brand-font mb-1">Manage Service Catalog</h1>
+            <p class="text-muted small mb-0">Define maintenance packages, labor tariffs, estimated bay turnaround times, and icons.</p>
+        </div>
+        <div class="mt-2 mt-md-0 d-flex gap-2">
+            <a asp-action="CreateService" class="btn btn-autocare-primary">
+                <i class="fa-solid fa-plus me-1"></i>Add New Service
+            </a>
+            <a asp-action="Dashboard" class="btn btn-outline-secondary">
+                <i class="fa-solid fa-arrow-left me-1"></i>Back
+            </a>
+        </div>
+    </div>
+
+    <div class="classic-card">
+        <div class="classic-card-body p-0">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-autocare table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Icon</th>
+                                <th>Service Name</th>
+                                <th>Description</th>
+                                <th>Base Charge</th>
+                                <th>Est. Duration</th>
+                                <th>Status</th>
+                                <th class="text-end" style="min-width: 180px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var s in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="rounded bg-light border p-2 text-center text-primary" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="@s.IconClass fs-5"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold text-navy">@s.ServiceName</div>
+                                        <div class="text-muted" style="font-size: 0.72rem;">ID: #@s.ServiceId</div>
+                                    </td>
+                                    <td class="small text-muted" style="max-width: 320px;">
+                                        @s.Description
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold fs-6 text-dark">₹@s.Price.ToString("N0")</div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border">
+                                            <i class="fa-regular fa-clock me-1 text-muted"></i>@s.EstimatedDuration
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if (s.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="d-inline-flex gap-1">
+                                            <!-- Toggle Active Status Form -->
+                                            <form asp-action="ToggleServiceStatus" asp-route-id="@s.ServiceId" method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-outline-secondary btn-sm py-1 px-2" title="@(s.IsActive ? "Mark Inactive" : "Mark Active")">
+                                                    <i class="fa-solid @(s.IsActive ? "fa-toggle-on text-success" : "fa-toggle-off text-muted")"></i>
+                                                </button>
+                                            </form>
+
+                                            <!-- Edit Button -->
+                                            <a asp-action="EditService" asp-route-id="@s.ServiceId" class="btn btn-outline-primary btn-sm py-1 px-2" title="Edit Service">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </a>
+
+                                            <!-- Delete Button -->
+                                            <button type="button" class="btn btn-outline-danger btn-sm py-1 px-2" data-bs-toggle="modal" data-bs-target="#deleteServiceModal-@s.ServiceId" title="Delete Service">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </div>
+
+                                        <!-- Delete Confirmation Modal -->
+                                        <div class="modal fade" id="deleteServiceModal-@s.ServiceId" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content text-start">
+                                                    <div class="modal-header bg-danger text-white">
+                                                        <h5 class="modal-title">
+                                                            <i class="fa-solid fa-triangle-exclamation me-2"></i>Delete Service
+                                                        </h5>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to remove <strong>@s.ServiceName</strong> from the catalog?
+                                                        <div class="alert alert-warning small mt-3 mb-0">
+                                                            <i class="fa-solid fa-circle-info me-1"></i> If this service is associated with active customer bookings, consider toggling it to <strong>Inactive</strong> instead of deleting.
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                                        <form asp-action="DeleteService" asp-route-id="@s.ServiceId" method="post" class="d-inline">
+                                                            <button type="submit" class="btn btn-danger btn-sm">Yes, Delete Service</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5 text-muted">
+                    <p>No services registered in catalog.</p>
+                    <a asp-action="CreateService" class="btn btn-autocare-primary btn-sm">Add First Service</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

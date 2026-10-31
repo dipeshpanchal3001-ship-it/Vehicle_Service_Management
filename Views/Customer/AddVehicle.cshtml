@@ -1,0 +1,96 @@
+@model AutoCare.ViewModels.VehicleViewModel
+@{
+    ViewData["Title"] = "Add New Vehicle - AutoCare";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <a asp-action="Vehicles" class="text-decoration-none text-muted small">
+                    <i class="fa-solid fa-arrow-left me-1"></i>Back to My Vehicles
+                </a>
+            </div>
+
+            <div class="classic-card">
+                <div class="classic-card-header">
+                    <h5><i class="fa-solid fa-car-tunnel text-warning me-2"></i>Register New Vehicle</h5>
+                    <span class="badge bg-primary">Customer Garage</span>
+                </div>
+
+                <div class="classic-card-body p-4">
+                    <form asp-action="AddVehicle" method="post" class="form-autocare">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger p-2 small mb-3"></div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="VehicleType" class="form-label"></label>
+                                <select asp-for="VehicleType" class="form-select">
+                                    <option value="Car">Car (Hatchback/Sedan)</option>
+                                    <option value="SUV">SUV / Compact SUV</option>
+                                    <option value="Bike">Motorcycle / Bike</option>
+                                    <option value="Scooter">Scooter / Moped</option>
+                                    <option value="EV">Electric Vehicle (EV)</option>
+                                    <option value="Commercial">Commercial / Van</option>
+                                </select>
+                                <span asp-validation-for="VehicleType" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="FuelType" class="form-label"></label>
+                                <select asp-for="FuelType" class="form-select">
+                                    <option value="Petrol">Petrol</option>
+                                    <option value="Diesel">Diesel</option>
+                                    <option value="Electric">Electric</option>
+                                    <option value="Hybrid">Hybrid</option>
+                                    <option value="CNG">CNG</option>
+                                </select>
+                                <span asp-validation-for="FuelType" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Brand" class="form-label"></label>
+                                <input asp-for="Brand" class="form-control" placeholder="e.g. Honda, Hyundai, Royal Enfield" />
+                                <span asp-validation-for="Brand" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Model" class="form-label"></label>
+                                <input asp-for="Model" class="form-control" placeholder="e.g. City, Creta, Classic 350" />
+                                <span asp-validation-for="Model" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-8">
+                                <label asp-for="RegistrationNumber" class="form-label"></label>
+                                <input asp-for="RegistrationNumber" class="form-control text-uppercase" placeholder="e.g. MH 02 AB 1234 or DL 01 XY 9999" />
+                                <span asp-validation-for="RegistrationNumber" class="text-danger small"></span>
+                                <div class="form-text small">Must be unique across the platform.</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="ManufacturingYear" class="form-label"></label>
+                                <input asp-for="ManufacturingYear" class="form-control" placeholder="e.g. 2022" />
+                                <span asp-validation-for="ManufacturingYear" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                            <a asp-action="Vehicles" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-autocare-primary px-4">
+                                <i class="fa-solid fa-floppy-disk me-1"></i>Save Vehicle
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

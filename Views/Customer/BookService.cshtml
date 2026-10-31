@@ -1,0 +1,160 @@
+@model AutoCare.ViewModels.BookServiceViewModel
+@{
+    ViewData["Title"] = "Book a Vehicle Service - AutoCare";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-8">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <a asp-action="Dashboard" class="text-decoration-none text-muted small">
+                    <i class="fa-solid fa-arrow-left me-1"></i>Back to Dashboard
+                </a>
+            </div>
+
+            <div class="classic-card">
+                <div class="classic-card-header">
+                    <h5><i class="fa-solid fa-calendar-check text-warning me-2"></i>Schedule Service Appointment</h5>
+                    <span class="badge bg-primary">Online Reservation</span>
+                </div>
+
+                <div class="classic-card-body p-4">
+                    <form asp-action="BookService" method="post" class="form-autocare" id="bookingForm">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger p-2 small mb-3"></div>
+
+                        <!-- 1. Select Vehicle -->
+                        <div class="mb-3">
+                            <label asp-for="VehicleId" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-car"></i></span>
+                                <select asp-for="VehicleId" asp-items="Model.VehicleOptions" class="form-select">
+                                    <option value="">-- Choose from your registered vehicles --</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="VehicleId" class="text-danger small"></span>
+                            <div class="d-flex justify-content-between align-items-center mt-1">
+                                <span class="form-text small">Need to service a different vehicle?</span>
+                                <a asp-action="AddVehicle" class="small text-decoration-none fw-bold text-primary">+ Add New Vehicle</a>
+                            </div>
+                        </div>
+
+                        <!-- 2. Select Service with Live Price Box -->
+                        <div class="mb-3">
+                            <label asp-for="ServiceId" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-wrench"></i></span>
+                                <select asp-for="ServiceId" class="form-select" id="serviceSelect">
+                                    <option value="">-- Select required maintenance service --</option>
+                                    @foreach (var s in Model.ServiceOptions)
+                                    {
+                                        <option value="@s.ServiceId" data-price="@s.Price" data-duration="@s.EstimatedDuration" selected="@(Model.ServiceId == s.ServiceId)">
+                                            @s.ServiceName – ₹@s.Price.ToString("N0") (@s.EstimatedDuration)
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            <span asp-validation-for="ServiceId" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Dynamic Service Price & Details Summary Card -->
+                        <div class="p-3 mb-4 rounded border bg-light" id="servicePriceBox" style="display: none;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="small text-muted text-uppercase fw-bold">Selected Service Estimate</div>
+                                    <div class="fw-bold text-primary fs-5" id="displayServiceName">Service Name</div>
+                                    <div class="small text-muted" id="displayServiceDuration"><i class="fa-regular fa-clock me-1"></i>Duration</div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fs-4 fw-bold brand-font text-dark" id="displayServicePrice">₹0</div>
+                                    <span class="badge bg-success">Standard Base Charge</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Preferred Date & Time Slot -->
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="PreferredDate" class="form-label"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-calendar-day"></i></span>
+                                    <input asp-for="PreferredDate" type="date" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                                </div>
+                                <span asp-validation-for="PreferredDate" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="PreferredTime" class="form-label"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-clock"></i></span>
+                                    <select asp-for="PreferredTime" class="form-select">
+                                        <option value="Morning (09:00 AM - 12:00 PM)">Morning (09:00 AM - 12:00 PM)</option>
+                                        <option value="Afternoon (12:00 PM - 03:00 PM)">Afternoon (12:00 PM - 03:00 PM)</option>
+                                        <option value="Evening (03:00 PM - 06:00 PM)">Evening (03:00 PM - 06:00 PM)</option>
+                                    </select>
+                                </div>
+                                <span asp-validation-for="PreferredTime" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <!-- 4. Problem Description -->
+                        <div class="mb-3">
+                            <label asp-for="ProblemDescription" class="form-label"></label>
+                            <textarea asp-for="ProblemDescription" class="form-control" rows="3" placeholder="Describe symptoms, noises, warning lights, or specific inspection points..."></textarea>
+                            <span asp-validation-for="ProblemDescription" class="text-danger small"></span>
+                        </div>
+
+                        <!-- 5. Additional Notes -->
+                        <div class="mb-4">
+                            <label asp-for="AdditionalNotes" class="form-label"></label>
+                            <textarea asp-for="AdditionalNotes" class="form-control" rows="2" placeholder="Any special requests (e.g. pickup preference, keep old parts for inspection)..."></textarea>
+                            <span asp-validation-for="AdditionalNotes" class="text-danger small"></span>
+                        </div>
+
+                        <div class="alert alert-info small d-flex align-items-center gap-2 mb-4">
+                            <i class="fa-solid fa-circle-info fs-5"></i>
+                            <div>
+                                Your request will be assigned a unique tracking number with initial status <strong>Pending</strong>. AutoCare service desk will review and confirm your reserved bay.
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 pt-2 border-top">
+                            <a asp-action="Dashboard" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-autocare-gold px-4 btn-lg fs-6">
+                                <i class="fa-solid fa-check me-2"></i>Confirm & Book Appointment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            function updatePriceDisplay() {
+                var select = document.getElementById('serviceSelect');
+                var selectedOption = select.options[select.selectedIndex];
+                var priceBox = document.getElementById('servicePriceBox');
+
+                if (selectedOption && selectedOption.value) {
+                    var price = selectedOption.getAttribute('data-price');
+                    var duration = selectedOption.getAttribute('data-duration');
+                    var serviceName = selectedOption.text.split('–')[0].trim();
+
+                    document.getElementById('displayServiceName').textContent = serviceName;
+                    document.getElementById('displayServicePrice').textContent = '₹' + parseFloat(price).toLocaleString('en-IN');
+                    document.getElementById('displayServiceDuration').innerHTML = '<i class="fa-regular fa-clock me-1"></i>Est. Duration: ' + duration;
+                    priceBox.style.display = 'block';
+                } else {
+                    priceBox.style.display = 'none';
+                }
+            }
+
+            $('#serviceSelect').on('change', updatePriceDisplay);
+            updatePriceDisplay(); // run on initial load
+        });
+    </script>
+}

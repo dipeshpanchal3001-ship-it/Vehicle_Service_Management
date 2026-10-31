@@ -1,0 +1,87 @@
+@model IEnumerable<AutoCare.ViewModels.CustomerItemViewModel>
+@{
+    ViewData["Title"] = "Customer Management - Admin AutoCare";
+}
+
+<div class="container py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <div class="text-uppercase fw-bold small text-muted">Customer Accounts</div>
+            <h1 class="h3 brand-font mb-1">Registered Customers</h1>
+            <p class="text-muted small mb-0">Overview of registered client accounts, contact records, vehicle fleet, and lifetime bookings.</p>
+        </div>
+        <div class="mt-2 mt-md-0 d-flex gap-2">
+            <a asp-action="Dashboard" class="btn btn-outline-secondary btn-sm">
+                <i class="fa-solid fa-arrow-left me-1"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="classic-card">
+        <div class="classic-card-body p-0">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-autocare table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Customer Name</th>
+                                <th>Contact Information</th>
+                                <th>Registered Date</th>
+                                <th class="text-center">Vehicles Owned</th>
+                                <th class="text-center">Total Bookings</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var c in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="rounded-circle bg-light border p-2 text-primary text-center" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fa-solid fa-user"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold text-navy">@c.FullName</div>
+                                                <div class="text-muted" style="font-size: 0.72rem;">Customer ID: @c.Id.Substring(0, Math.Min(8, c.Id.Length))...</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="small"><i class="fa-solid fa-envelope me-1 text-muted"></i>@c.Email</div>
+                                        <div class="small text-muted"><i class="fa-solid fa-phone me-1 text-muted"></i>@c.PhoneNumber</div>
+                                    </td>
+                                    <td class="small text-muted">
+                                        @c.RegisteredDate.ToString("dd MMM yyyy")
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-light text-dark border px-3 py-1 fs-6">
+                                            <i class="fa-solid fa-car me-1 text-primary"></i>@c.VehicleCount
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-light text-dark border px-3 py-1 fs-6">
+                                            <i class="fa-solid fa-calendar-check me-1 text-warning"></i>@c.RequestCount
+                                        </span>
+                                    </td>
+                                    <td class="text-end">
+                                        <a asp-action="Requests" asp-route-search="@c.Email" class="btn btn-autocare-primary btn-sm py-1 px-2" title="View Customer's Service Requests">
+                                            <i class="fa-solid fa-list-check me-1"></i>View Bookings
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5 text-muted">
+                    <p>No customer accounts found.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

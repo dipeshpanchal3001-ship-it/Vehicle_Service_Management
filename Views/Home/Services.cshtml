@@ -1,0 +1,56 @@
+@model IEnumerable<AutoCare.Models.VehicleService>
+@{
+    ViewData["Title"] = "Service Catalog - AutoCare";
+}
+
+<div class="bg-light py-5 border-bottom">
+    <div class="container text-center">
+        <div class="text-uppercase fw-bold small text-muted mb-1" style="letter-spacing: 2px;">Comprehensive Maintenance</div>
+        <h1 class="display-6 brand-font fw-bold">Vehicle Service Catalog</h1>
+        <p class="text-muted mx-auto" style="max-width: 650px;">
+            Choose from our specialized preventive maintenance, diagnostics, and repairs. Every service includes multi-point safety inspection and computerized report.
+        </p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var service in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="service-card-icon">
+                                <i class="@service.IconClass"></i>
+                            </div>
+                            <span class="badge bg-light text-dark border">
+                                <i class="fa-regular fa-clock me-1 text-muted"></i>@service.EstimatedDuration
+                            </span>
+                        </div>
+
+                        <h3 class="service-card-title">@service.ServiceName</h3>
+                        <p class="service-card-desc">@service.Description</p>
+
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
+                            <div>
+                                <div class="service-card-price">₹@service.Price.ToString("N0")</div>
+                                <span class="service-card-duration">Inclusive of taxes & labor</span>
+                            </div>
+                            <a asp-controller="Customer" asp-action="BookService" asp-route-serviceId="@service.ServiceId" class="btn btn-autocare-primary btn-sm px-3">
+                                <i class="fa-solid fa-calendar-plus me-1"></i>Book Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">No services found.</p>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,165 @@
+@model AutoCare.ViewModels.EditProfileViewModel
+@{
+    ViewData["Title"] = "My Profile - AutoCare";
+    var passwordModel = new AutoCare.ViewModels.ChangePasswordViewModel();
+    var passwordError = TempData["PasswordErrorMessage"] as string;
+}
+
+<div class="container py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <div class="text-uppercase fw-bold small text-muted">Customer Account</div>
+            <h1 class="h3 brand-font mb-1">Account & Profile Settings</h1>
+            <p class="text-muted small mb-0">View and update your personal contact details, verified mobile number, and security password.</p>
+        </div>
+        <div class="mt-2 mt-md-0">
+            <a asp-action="Dashboard" class="btn btn-outline-secondary btn-sm">
+                <i class="fa-solid fa-arrow-left me-1"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(passwordError))
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 d-flex align-items-center gap-2 mb-4" role="alert">
+            <i class="fa-solid fa-triangle-exclamation fs-5 text-danger"></i>
+            <div class="flex-grow-1">@passwordError</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row g-4">
+        <!-- Profile Summary Column -->
+        <div class="col-lg-4">
+            <div class="classic-card text-center p-4 mb-4">
+                <div class="brand-emblem mx-auto mb-3" style="width: 72px; height: 72px; font-size: 2rem;">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <h5 class="brand-font mb-1">@Model.FullName</h5>
+                <div class="badge bg-primary px-3 py-1 mb-3">CUSTOMER</div>
+                
+                <div class="text-start border-top pt-3 small text-muted">
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="fw-semibold text-dark"><i class="fa-solid fa-envelope me-2 text-primary"></i>Email:</span>
+                        <span class="text-truncate ms-2" style="max-width: 170px;">@Model.Email</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="fw-semibold text-dark"><i class="fa-solid fa-phone me-2 text-primary"></i>Mobile:</span>
+                        <span>@Model.PhoneNumber</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="fw-semibold text-dark"><i class="fa-solid fa-calendar me-2 text-primary"></i>Joined:</span>
+                        <span>@Model.MemberSince.ToString("dd MMM yyyy")</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3 bg-light rounded border small">
+                <h6 class="fw-bold text-navy mb-2"><i class="fa-solid fa-shield-halved text-warning me-1"></i>Security Note</h6>
+                <p class="text-muted mb-0">
+                    Your personal details are securely stored. Mobile numbers must follow the 10-digit Indian standard. Password changes require verification of your current password.
+                </p>
+            </div>
+        </div>
+
+        <!-- Edit Forms Column -->
+        <div class="col-lg-8">
+            <!-- Edit Profile Form -->
+            <div class="classic-card mb-4">
+                <div class="classic-card-header">
+                    <h5 class="mb-0"><i class="fa-solid fa-user-pen text-warning me-2"></i>Personal Details</h5>
+                    <span class="badge bg-light text-dark border">Basic Information</span>
+                </div>
+                <div class="classic-card-body p-4">
+                    <form asp-action="Profile" method="post" class="form-autocare">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger p-2 small mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label fw-semibold"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-user"></i></span>
+                                <input asp-for="FullName" class="form-control" placeholder="Enter your full name" />
+                            </div>
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="Email" class="form-label fw-semibold"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-envelope"></i></span>
+                                    <input asp-for="Email" class="form-control" placeholder="name@example.com" />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="PhoneNumber" class="form-label fw-semibold"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-phone"></i></span>
+                                    <input asp-for="PhoneNumber" class="form-control" placeholder="9876543210" maxlength="10" autocomplete="tel" />
+                                </div>
+                                <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                                <div class="form-text small text-muted">10-digit Indian mobile number (e.g. 9876543210).</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a asp-action="Dashboard" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-autocare-primary">
+                                <i class="fa-solid fa-floppy-disk me-1"></i>Save Profile Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Change Password Form -->
+            <div class="classic-card">
+                <div class="classic-card-header">
+                    <h5 class="mb-0"><i class="fa-solid fa-key text-warning me-2"></i>Change Password</h5>
+                    <span class="badge bg-light text-dark border">Security</span>
+                </div>
+                <div class="classic-card-body p-4">
+                    <form asp-action="ChangePassword" method="post" class="form-autocare">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" for="CurrentPassword">Current Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-lock"></i></span>
+                                <input type="password" id="CurrentPassword" name="CurrentPassword" class="form-control" placeholder="Enter existing password" required />
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="NewPassword">New Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-shield-halved"></i></span>
+                                    <input type="password" id="NewPassword" name="NewPassword" class="form-control" placeholder="Minimum 6 characters" required />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="ConfirmPassword">Confirm New Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-check-double"></i></span>
+                                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" placeholder="Re-type new password" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="submit" class="btn btn-autocare-gold">
+                                <i class="fa-solid fa-lock me-1"></i>Update Password
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

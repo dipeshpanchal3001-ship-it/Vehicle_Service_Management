@@ -1,0 +1,542 @@
+/* AutoCare - Classic Vehicle Service Management System CSS */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+    --primary-navy: #142B45;
+    --primary-navy-dark: #0D1C2D;
+    --primary-navy-light: #1E3A5F;
+    --secondary-blue: #3F6385;
+    --bg-offwhite: #F7F8FA;
+    --bg-card: #FFFFFF;
+    --accent-gold: #C9A45C;
+    --accent-gold-dark: #A9833D;
+    --accent-gold-light: #F4EAD3;
+    --text-charcoal: #242B33;
+    --text-muted: #6B7280;
+    --border-subtle: #E5E7EB;
+    --border-accent: rgba(201, 164, 92, 0.35);
+
+    /* Status Palette */
+    --status-pending-bg: #FEF3C7;
+    --status-pending-text: #92400E;
+    --status-approved-bg: #DBEAFE;
+    --status-approved-text: #1E40AF;
+    --status-inprogress-bg: #E0E7FF;
+    --status-inprogress-text: #3730A3;
+    --status-completed-bg: #DCFCE7;
+    --status-completed-text: #166534;
+    --status-rejected-bg: #FEE2E2;
+    --status-rejected-text: #991B1B;
+    --status-cancelled-bg: #F1F5F9;
+    --status-cancelled-text: #475569;
+}
+
+/* Base & Typography */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-charcoal);
+    background-color: var(--bg-offwhite);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+h1, h2, h3, h4, .brand-font, .playfair {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 600;
+    color: var(--primary-navy);
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/* Classic Navbar */
+.navbar-autocare {
+    background-color: var(--primary-navy) !important;
+    border-bottom: 2px solid var(--accent-gold);
+    padding: 0.85rem 0;
+    box-shadow: 0 4px 14px rgba(13, 28, 45, 0.15);
+}
+
+.navbar-brand-autocare {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+}
+
+.brand-emblem {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-dark));
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-navy);
+    font-size: 1.15rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.brand-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #FFFFFF;
+    line-height: 1;
+}
+
+.brand-tagline {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.nav-link-autocare {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.9rem !important;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.nav-link-autocare:hover {
+    color: #FFFFFF !important;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link-autocare.active {
+    color: var(--accent-gold) !important;
+    background-color: rgba(201, 164, 92, 0.18) !important;
+    font-weight: 600;
+    box-shadow: inset 0 -2px 0 var(--accent-gold);
+}
+
+.nav-link-gold {
+    color: var(--accent-gold) !important;
+    font-weight: 600;
+}
+
+.nav-link-gold:hover {
+    color: #FFFFFF !important;
+}
+
+/* Classic Buttons */
+.btn-autocare-primary {
+    background-color: var(--primary-navy);
+    color: #FFFFFF;
+    border: 1px solid var(--primary-navy);
+    font-weight: 500;
+    padding: 0.6rem 1.4rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-autocare-primary:hover {
+    background-color: var(--primary-navy-dark);
+    border-color: var(--primary-navy-dark);
+    color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(20, 43, 69, 0.25);
+}
+
+.btn-autocare-gold {
+    background-color: var(--accent-gold);
+    color: var(--primary-navy-dark);
+    border: 1px solid var(--accent-gold);
+    font-weight: 600;
+    padding: 0.6rem 1.4rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-autocare-gold:hover {
+    background-color: var(--accent-gold-dark);
+    border-color: var(--accent-gold-dark);
+    color: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(201, 164, 92, 0.35);
+}
+
+.btn-autocare-outline {
+    background-color: transparent;
+    color: var(--primary-navy);
+    border: 1.5px solid var(--primary-navy);
+    font-weight: 500;
+    padding: 0.55rem 1.35rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-autocare-outline:hover {
+    background-color: var(--primary-navy);
+    color: #FFFFFF;
+}
+
+.btn-autocare-outline-gold {
+    background-color: transparent;
+    color: var(--accent-gold);
+    border: 1.5px solid var(--accent-gold);
+    font-weight: 600;
+    padding: 0.55rem 1.35rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-autocare-outline-gold:hover {
+    background-color: var(--accent-gold);
+    color: var(--primary-navy-dark);
+}
+
+/* Classic Cards */
+.classic-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.classic-card:hover {
+    box-shadow: 0 6px 18px rgba(20, 43, 69, 0.08);
+}
+
+.classic-card-header {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 1.1rem 1.35rem;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.classic-card-header h5 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.classic-card-body {
+    padding: 1.35rem;
+}
+
+/* Service Catalog Cards */
+.service-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border-subtle);
+    border-top: 3.5px solid var(--accent-gold);
+    border-radius: 8px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(20, 43, 69, 0.09);
+}
+
+.service-card-icon {
+    width: 52px;
+    height: 52px;
+    background-color: var(--accent-gold-light);
+    color: var(--primary-navy);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
+}
+
+.service-card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.service-card-desc {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    flex-grow: 1;
+    margin-bottom: 1.25rem;
+}
+
+.service-card-price {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--primary-navy);
+    font-family: 'Playfair Display', serif;
+}
+
+.service-card-duration {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, rgba(20, 43, 69, 0.96), rgba(13, 28, 45, 0.98)), url('/images/workshop-bg.jpg') center/cover no-repeat;
+    color: #FFFFFF;
+    padding: 5rem 0 4.5rem;
+    border-bottom: 3px solid var(--accent-gold);
+}
+
+.hero-subtitle {
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.hero-title {
+    color: #FFFFFF;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+}
+
+.hero-lead {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.15rem;
+    max-width: 650px;
+    margin-bottom: 2rem;
+}
+
+/* Dashboard Metric Cards */
+.kpi-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 1.4rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.kpi-value {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--primary-navy);
+    line-height: 1.1;
+    font-family: 'Playfair Display', serif;
+}
+
+.kpi-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.25rem;
+}
+
+.kpi-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+/* Status Badges */
+.badge-status {
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    letter-spacing: 0.3px;
+}
+
+.badge-status.status-pending {
+    background-color: var(--status-pending-bg);
+    color: var(--status-pending-text);
+    border: 1px solid rgba(217, 119, 6, 0.3);
+}
+
+.badge-status.status-approved {
+    background-color: var(--status-approved-bg);
+    color: var(--status-approved-text);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+}
+
+.badge-status.status-inprogress {
+    background-color: var(--status-inprogress-bg);
+    color: var(--status-inprogress-text);
+    border: 1px solid rgba(79, 70, 229, 0.3);
+}
+
+.badge-status.status-completed {
+    background-color: var(--status-completed-bg);
+    color: var(--status-completed-text);
+    border: 1px solid rgba(22, 101, 52, 0.3);
+}
+
+.badge-status.status-rejected {
+    background-color: var(--status-rejected-bg);
+    color: var(--status-rejected-text);
+    border: 1px solid rgba(185, 28, 28, 0.3);
+}
+
+.badge-status.status-cancelled {
+    background-color: var(--status-cancelled-bg);
+    color: var(--status-cancelled-text);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+/* Tables */
+.table-autocare {
+    margin-bottom: 0;
+}
+
+.table-autocare thead th {
+    background-color: var(--primary-navy);
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.9rem 1rem;
+    border: none;
+}
+
+.table-autocare tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    font-size: 0.92rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.table-autocare tbody tr:hover {
+    background-color: rgba(20, 43, 69, 0.02);
+}
+
+/* Forms */
+.form-autocare .form-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--primary-navy);
+    margin-bottom: 0.35rem;
+}
+
+.form-autocare .form-control, .form-autocare .form-select {
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-autocare .form-control:focus, .form-autocare .form-select:focus {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px rgba(201, 164, 92, 0.2);
+    outline: none;
+}
+
+/* Footer */
+.footer-autocare {
+    background-color: var(--primary-navy-dark);
+    color: rgba(255, 255, 255, 0.75);
+    border-top: 3px solid var(--accent-gold);
+    padding: 3.5rem 0 1.5rem;
+    margin-top: 4rem;
+    font-size: 0.92rem;
+}
+
+.footer-autocare h6 {
+    color: #FFFFFF;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    margin-bottom: 1.25rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.footer-autocare h6::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 32px;
+    height: 2px;
+    background-color: var(--accent-gold);
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.6rem;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--accent-gold);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+/* Printable Invoice */
+.invoice-box {
+    background: #FFFFFF;
+    padding: 3rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    max-width: 820px;
+    margin: 0 auto;
+}
+
+.invoice-header {
+    border-bottom: 2px solid var(--accent-gold);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+@media print {
+    body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+    }
+    header, footer, .no-print, .btn, .alert {
+        display: none !important;
+    }
+    .invoice-box {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+    }
+}

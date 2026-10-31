@@ -1,0 +1,88 @@
+@model AutoCare.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Customer Registration - AutoCare";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="classic-card">
+                <div class="classic-card-header text-center justify-content-center flex-column py-4" style="background-color: var(--primary-navy); color: #FFFFFF;">
+                    <div class="brand-emblem mx-auto mb-2" style="width: 48px; height: 48px; font-size: 1.4rem;">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <h4 class="text-white mb-1">Create Customer Account</h4>
+                    <p class="text-white-50 small mb-0">Register your profile to book services and track vehicle maintenance</p>
+                </div>
+
+                <div class="classic-card-body p-4">
+                    <form asp-controller="Account" asp-action="Register" method="post" class="form-autocare">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger p-2 small mb-3" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-user"></i></span>
+                                <input asp-for="FullName" class="form-control" placeholder="e.g. Ramesh Kumar" autofocus />
+                            </div>
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Email" class="form-label"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-envelope"></i></span>
+                                    <input asp-for="Email" class="form-control" placeholder="name@example.com" />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="PhoneNumber" class="form-label"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-phone"></i></span>
+                                    <input asp-for="PhoneNumber" class="form-control" placeholder="9876543210" maxlength="10" autocomplete="tel" />
+                                </div>
+                                <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="Password" class="form-label"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-lock"></i></span>
+                                    <input asp-for="Password" class="form-control" placeholder="Minimum 6 characters" />
+                                </div>
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ConfirmPassword" class="form-label"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="fa-solid fa-shield-halved"></i></span>
+                                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Re-type password" />
+                                </div>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-autocare-gold btn-lg fs-6">
+                                <i class="fa-solid fa-check me-2"></i>Complete Registration
+                            </button>
+                        </div>
+
+                        <div class="text-center text-muted small">
+                            Already registered? 
+                            <a asp-action="Login" class="text-decoration-none fw-bold text-primary">Sign In to Your Account</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

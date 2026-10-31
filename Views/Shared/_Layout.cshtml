@@ -1,0 +1,267 @@
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+
+    string IsActive(string controller, string? action = null, string[]? relatedActions = null)
+    {
+        if (!string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase))
+        {
+            return "";
+        }
+
+        if (string.IsNullOrEmpty(action))
+        {
+            return "active";
+        }
+
+        if (string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase))
+        {
+            return "active";
+        }
+
+        if (relatedActions != null && relatedActions.Any(a => string.Equals(currentAction, a, StringComparison.OrdinalIgnoreCase)))
+        {
+            return "active";
+        }
+
+        return "";
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AutoCare Vehicle Service Management System</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Custom Classic Automotive Theme CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-autocare">
+            <div class="container">
+                <a class="navbar-brand navbar-brand-autocare" asp-controller="Home" asp-action="Index">
+                    <div class="brand-emblem">
+                        <i class="fa-solid fa-car-side"></i>
+                    </div>
+                    <div>
+                        <div class="brand-title">AutoCare</div>
+                        <div class="brand-tagline">Classic Vehicle Services</div>
+                    </div>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAutoCare" aria-controls="navbarAutoCare"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarAutoCare">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <!-- Admin Area Navigation -->
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-autocare @IsActive("Admin", "Dashboard")" asp-controller="Admin" asp-action="Dashboard">
+                                        <i class="fa-solid fa-gauge-high me-1"></i>Dashboard
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-autocare @IsActive("Admin", "Services", new[] { "CreateService", "EditService" })" asp-controller="Admin" asp-action="Services">
+                                        <i class="fa-solid fa-screwdriver-wrench me-1"></i>Manage Services
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-autocare @IsActive("Admin", "Requests", new[] { "RequestDetails", "Invoice" })" asp-controller="Admin" asp-action="Requests">
+                                        <i class="fa-solid fa-clipboard-list me-1"></i>Service Requests
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-autocare @IsActive("Admin", "Customers")" asp-controller="Admin" asp-action="Customers">
+                                        <i class="fa-solid fa-users me-1"></i>Customers
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-autocare @IsActive("Admin", "Profile")" asp-controller="Admin" asp-action="Profile">
+                                        <i class="fa-solid fa-user-shield me-1"></i>Admin Profile
+                                    </a>
+                                </li>
+                                <li class="nav-item ms-lg-2">
+                                    <a class="nav-link nav-link-autocare text-warning" asp-controller="Home" asp-action="Index" target="_blank" title="View Public Website in new tab">
+                                        <i class="fa-solid fa-arrow-up-right-from-square me-1"></i>View Website
+                                    </a>
+                                </li>
+                            }
+                            else if (User.IsInRole("Customer"))
+                            {
+                                <!-- Customer Area Navigation -->
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-autocare @IsActive("Customer", "Dashboard")" asp-controller="Customer" asp-action="Dashboard">
+                                        <i class="fa-solid fa-gauge me-1"></i>Dashboard
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-autocare @IsActive("Customer", "Vehicles", new[] { "AddVehicle", "EditVehicle" })" asp-controller="Customer" asp-action="Vehicles">
+                                        <i class="fa-solid fa-car me-1"></i>My Vehicles
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-autocare @IsActive("Customer", "BookService")" asp-controller="Customer" asp-action="BookService">
+                                        <i class="fa-solid fa-calendar-check me-1"></i>Book a Service
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-autocare @IsActive("Customer", "MyRequests", new[] { "RequestDetails", "Invoice" })" asp-controller="Customer" asp-action="MyRequests">
+                                        <i class="fa-solid fa-clock-rotate-left me-1"></i>My Service Requests
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-autocare @IsActive("Customer", "Profile")" asp-controller="Customer" asp-action="Profile">
+                                        <i class="fa-solid fa-user me-1"></i>My Profile
+                                    </a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <!-- Public Website Navigation -->
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-autocare @IsActive("Home", "Index")" asp-controller="Home" asp-action="Index">
+                                    <i class="fa-solid fa-house-chimney me-1"></i>Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-autocare @IsActive("Home", "Services")" asp-controller="Home" asp-action="Services">
+                                    <i class="fa-solid fa-wrench me-1"></i>Services
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-autocare @IsActive("Home", "About")" asp-controller="Home" asp-action="About">
+                                    <i class="fa-solid fa-circle-info me-1"></i>About Us
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-autocare @IsActive("Home", "Contact")" asp-controller="Home" asp-action="Contact">
+                                    <i class="fa-solid fa-envelope me-1"></i>Contact
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Global Alert Notifications -->
+    <div class="container mt-3">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 d-flex align-items-center gap-2" role="alert">
+                <i class="fa-solid fa-circle-check fs-5 text-success"></i>
+                <div class="flex-grow-1">@TempData["SuccessMessage"]</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 d-flex align-items-center gap-2" role="alert">
+                <i class="fa-solid fa-circle-exclamation fs-5 text-danger"></i>
+                <div class="flex-grow-1">@TempData["ErrorMessage"]</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <footer class="footer-autocare">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="brand-emblem">
+                            <i class="fa-solid fa-car-side"></i>
+                        </div>
+                        <span class="brand-title fs-4">AutoCare</span>
+                    </div>
+                    <p class="text-white-50 small mb-3">
+                        AutoCare is a premier vehicle care and multi-brand workshop management facility. Dedicated to precision diagnostics, transparent service pricing, certified craftsmanship, and unwavering road safety.
+                    </p>
+                    <div class="d-flex gap-3 text-white-50">
+                        <a href="#" class="text-white-50 text-decoration-none"><i class="fa-brands fa-facebook fa-lg"></i></a>
+                        <a href="#" class="text-white-50 text-decoration-none"><i class="fa-brands fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-white-50 text-decoration-none"><i class="fa-brands fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white-50 text-decoration-none"><i class="fa-brands fa-youtube fa-lg"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <h6>Quick Links</h6>
+                    <ul class="footer-links">
+                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><a asp-controller="Home" asp-action="Services">Our Services</a></li>
+                        <li><a asp-controller="Home" asp-action="About">About AutoCare</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact">Contact & Bays</a></li>
+                        <li><a asp-controller="Account" asp-action="Login">Customer Portal</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h6>Our Services</h6>
+                    <ul class="footer-links">
+                        <li><a asp-controller="Home" asp-action="Services">General Periodic Servicing</a></li>
+                        <li><a asp-controller="Home" asp-action="Services">Engine Oil Replacement</a></li>
+                        <li><a asp-controller="Home" asp-action="Services">Brake Inspection & Calipers</a></li>
+                        <li><a asp-controller="Home" asp-action="Services">Laser Wheel Alignment</a></li>
+                        <li><a asp-controller="Home" asp-action="Services">Full Vehicle Diagnostics</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h6>Workshop Hub</h6>
+                    <p class="small text-white-50 mb-2">
+                        <i class="fa-solid fa-location-dot text-warning me-2"></i>Plot 42, Automotive Central Avenue, Industrial Zone, New Delhi, India - 110020
+                    </p>
+                    <p class="small text-white-50 mb-2">
+                        <i class="fa-solid fa-phone text-warning me-2"></i>+91 (011) 4567-8900 / +91 98765 43210
+                    </p>
+                    <p class="small text-white-50 mb-2">
+                        <i class="fa-solid fa-envelope text-warning me-2"></i>support@autocare.com
+                    </p>
+                    <p class="small text-white-50 mb-0">
+                        <i class="fa-solid fa-clock text-warning me-2"></i>Mon - Sat: 8:00 AM – 7:30 PM (Sunday Closed)
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center">
+                <div>
+                    &copy; 2026 AutoCare – Vehicle Service Management System. Crafted for academic demonstration.
+                </div>
+                <div class="d-flex gap-3">
+                    <span class="badge bg-secondary">ASP.NET Core MVC 8.0</span>
+                    <span class="badge bg-secondary">Entity Framework Core</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS & jQuery -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
